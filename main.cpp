@@ -12,10 +12,10 @@ public:
 };
 
 int main() {
-    vector<int> vec = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    vector<int> v = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    FilterIterator<vector<int>::iterator, IsEven> iter(vec.begin(), vec.end());
-    for (; iter != vec.end(); iter++)
-        std::cout << *iter << std::endl;
+    FilterIterator<vector<int>::iterator, IsEven> i(v.begin(), v.end());
+    for (; i != v.end(); ++i)
+        cout << *i << endl;
     return 0;
 }

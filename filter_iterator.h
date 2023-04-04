@@ -6,6 +6,10 @@ class FilterIterator {
     Iterator iter;
     Iterator end;
     Function func;
+
+    void findNextMatch();
+    void findPrevMatch();
+
 public:
     FilterIterator(Iterator iter, Iterator end)
         : iter(iter), end(end), func(func) {}
@@ -14,22 +18,19 @@ public:
 
     typename Iterator::value_type operator*() { return *iter; } 
 
-    Iterator operator++() {
-        ++iter;
-        while ( iter != end && (!func(*iter)) )
-            ++iter;
-        return iter;
-    }
-    Iterator operator++(typename Iterator::value_type) { return ++iter; }
+    Iterator operator++(); 
+    Iterator operator++(typename Iterator::value_type);
 
-    void operator--() { --iter; }
-    void operator--(typename Iterator::value_type) { iter--; }
+    Iterator operator--();
+    Iterator operator--(typename Iterator::value_type) { return --this; }
 
-    void operator+=(typename Iterator::value_type num) { iter += num; }
-    void operator-=(typename Iterator::value_type num) { iter -= num; }
+    void operator+=(typename Iterator::value_type num);
+    void operator-=(typename Iterator::value_type num);
 
-    Iterator operator+(typename Iterator::value_type num) { return iter + num; }
-    Iterator operator-(typename Iterator::value_type num) { return iter - num; }
+    Iterator operator+(typename Iterator::value_type num) 
+        { return iter + num; }
+    Iterator operator-(typename Iterator::value_type num) 
+        { return iter - num; }
     
     friend Iterator operator+(typename Iterator::value_type, Iterator) {}
     friend Iterator operator-(typename Iterator::value_type, Iterator) {}
