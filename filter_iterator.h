@@ -15,7 +15,7 @@ class FilterIterator {
     }
     Iterator findPrevMatch(int add) {
         iter -= add;
-        while ( iter < end && (!func(*iter)) )
+        while ( iter >= end && (!func(*iter)) )
             iter -= add;
         return iter;
     }
@@ -23,21 +23,19 @@ class FilterIterator {
 public:
     FilterIterator(Iterator iter, Iterator end)
         : iter(iter), end(end), func(func) {
-            if (iter < end)
-                findNextMatch(1);
-            else
-                findPrevMatch(1);
+            if (iter < end) findNextMatch(1);
+            else findPrevMatch(1);
         }
    
     ~FilterIterator() {}
 
     typename Iterator::value_type operator*() { return *iter; } 
 
-    Iterator operator++() { return findNextMatch(1); }
-    Iterator operator++(typename Iterator::value_type) { return findNextMatch(1); }
+    Iterator operator++()    { return findNextMatch(1); }
+    Iterator operator++(int) { return findNextMatch(1); }
 
-    Iterator operator--() { return findPrevMatch(1); }
-    Iterator operator--(typename Iterator::value_type) { return --this; }
+    Iterator operator--()    { return findPrevMatch(1); }
+    Iterator operator--(int) { return findPrevMatch(1); }
 
     void operator+=(typename Iterator::value_type num)
         { findNextMatch(num); }
