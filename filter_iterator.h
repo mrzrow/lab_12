@@ -7,26 +7,11 @@ class FilterIterator {
     Iterator end;
     Function func;
 
-    Iterator findNextMatch(int add) {
-        iter += add;
-        while ( iter < end && (!func(*iter)) )
-            iter += add;
-        return iter;
-    }
-    Iterator findPrevMatch(int add) {
-        iter -= add;
-        while ( iter >= end && (!func(*iter)) )
-            iter -= add;
-        return iter;
-    }
+    Iterator findNextMatch(int); 
+    Iterator findPrevMatch(int);
 
 public:
-    FilterIterator(Iterator iter, Iterator end)
-        : iter(iter), end(end), func(func) {
-            if (iter < end) findNextMatch(1);
-            else findPrevMatch(1);
-        }
-   
+    FilterIterator(Iterator, Iterator); 
     ~FilterIterator() {}
 
     typename Iterator::value_type operator*() { return *iter; } 
@@ -58,6 +43,30 @@ public:
     bool operator==(Iterator a) { return iter == a; }
     bool operator!=(Iterator a) { return iter != a; }
 };
+
+
+template<class I, class F>
+I FilterIterator<I, F>::findNextMatch(int add) {
+    iter += add;
+    while ( iter < end && (!func(*iter)) )
+        iter += add;
+    return iter;
+}
+
+template<class I, class F>
+I FilterIterator<I, F>::findPrevMatch(int add) {
+    iter -= add;
+    while ( iter >= end && (!func(*iter)) )
+        iter -= add;
+    return iter;
+}
+
+template<class I, class F>
+FilterIterator<I, F>::FilterIterator(I iter, I end)
+    : iter(iter), end(end) {
+        if (iter < end) findNextMatch(1);
+        else findPrevMatch(1);
+    }
 
 template<class I, class F>
 I operator+(typename I::value_type num, FilterIterator<I, F> iterator) { 
